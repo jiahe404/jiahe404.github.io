@@ -6,15 +6,20 @@
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge" >
   <link rel="dns-prefetch" href="http://yoursite.com">
-  <title>HeBlog</title>
+  <title>Windows 10 下安装Tensorflow | HeBlog</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta property="og:type" content="website">
-<meta property="og:title" content="HeBlog">
-<meta property="og:url" content="http://yoursite.com/index.html">
+  <meta name="description" content="Windows 10 下安装Tensorflow1.0.1-GPU之前在自己的windows上安装了tensorflow1.0.1-CPU版，后来想用gpu进行计算，于是安装gpu版。没想到软件之间的依赖关系、版本等导致数种问题，百度谷歌良久才调通程序，特记下曲折的安装过程和一些细节，尽量解释选择软件版本的原因，希望能减轻读者的痛苦。">
+<meta name="keywords" content="tensorflow">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Windows 10 下安装Tensorflow">
+<meta property="og:url" content="http://yoursite.com/2018/04/29/install-tf-on-win10/index.html">
 <meta property="og:site_name" content="HeBlog">
+<meta property="og:description" content="Windows 10 下安装Tensorflow1.0.1-GPU之前在自己的windows上安装了tensorflow1.0.1-CPU版，后来想用gpu进行计算，于是安装gpu版。没想到软件之间的依赖关系、版本等导致数种问题，百度谷歌良久才调通程序，特记下曲折的安装过程和一些细节，尽量解释选择软件版本的原因，希望能减轻读者的痛苦。">
 <meta property="og:locale" content="default">
+<meta property="og:updated_time" content="2018-04-29T09:12:57.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="HeBlog">
+<meta name="twitter:title" content="Windows 10 下安装Tensorflow">
+<meta name="twitter:description" content="Windows 10 下安装Tensorflow1.0.1-GPU之前在自己的windows上安装了tensorflow1.0.1-CPU版，后来想用gpu进行计算，于是安装gpu版。没想到软件之间的依赖关系、版本等导致数种问题，百度谷歌良久才调通程序，特记下曲折的安装过程和一些细节，尽量解释选择软件版本的原因，希望能减轻读者的痛苦。">
   
     <link rel="alternative" href="/atom.xml" title="HeBlog" type="application/atom+xml">
   
@@ -150,16 +155,14 @@
             <canvas data-colors="#eaeaea" data-sectionHeight="100" data-contentId="js-content" id="myCanvas1" class="anm-canvas"></canvas>
           </div>
           <div id="js-content" class="content-ll">
-            
-  
-    <article id="post-install-tf-on-win10" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+            <article id="post-install-tf-on-win10" class="article article-type-post " itemscope itemprop="blogPost">
   <div class="article-inner">
     
       <header class="article-header">
         
   
-    <h1 itemprop="name">
-      <a class="article-title" href="/2018/04/29/install-tf-on-win10/">Windows 10 下安装Tensorflow</a>
+    <h1 class="article-title" itemprop="name">
+      Windows 10 下安装Tensorflow
     </h1>
   
 
@@ -172,12 +175,166 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <h1 id="Windows-10-下安装Tensorflow1-0-1-GPU"><a href="#Windows-10-下安装Tensorflow1-0-1-GPU" class="headerlink" title="Windows 10 下安装Tensorflow1.0.1-GPU"></a>Windows 10 下安装Tensorflow1.0.1-GPU</h1><p>之前在自己的windows上安装了tensorflow1.0.1-CPU版，后来想用gpu进行计算，于是安装gpu版。没想到软件之间的依赖关系、版本等导致数种问题，百度谷歌良久才调通程序，特记下曲折的安装过程和一些细节，尽量解释选择软件版本的原因，希望能减轻读者的痛苦。<br>
-        
-          <a class="article-more-a" href="/2018/04/29/install-tf-on-win10/#more">more >></a>
-        
+        <h1 id="Windows-10-下安装Tensorflow1-0-1-GPU"><a href="#Windows-10-下安装Tensorflow1-0-1-GPU" class="headerlink" title="Windows 10 下安装Tensorflow1.0.1-GPU"></a>Windows 10 下安装Tensorflow1.0.1-GPU</h1><p>之前在自己的windows上安装了tensorflow1.0.1-CPU版，后来想用gpu进行计算，于是安装gpu版。没想到软件之间的依赖关系、版本等导致数种问题，百度谷歌良久才调通程序，特记下曲折的安装过程和一些细节，尽量解释选择软件版本的原因，希望能减轻读者的痛苦。<br><a id="more"></a></p>
+<h2 id="我的环境"><a href="#我的环境" class="headerlink" title="我的环境"></a>我的环境</h2><ul>
+<li><strong>操作系统：Windows 10 64bit</strong></li>
+<li><strong>显卡型号：GeForce GTX 950M</strong></li>
+</ul>
+<h2 id="软件准备"><a href="#软件准备" class="headerlink" title="软件准备"></a>软件准备</h2><ul>
+<li><p><strong>Anaconda3-4.2.0-Windows-x86_64.exe</strong></p>
+<blockquote>
+<p><a href="https://www.continuum.io/" target="_blank">Anaconda</a>是一个用于科学计算的Python发行版，安装后，python以及常用的用于计算的package如numpy、matplotlib、Pillow也都安装好了，而且还能切换不同版本的python，很方便。<br> 安装tensorflow是不必安装Anaconda的，但是你至少要有python环境，而且需要是python3.5.x，因为正式1.0版的tensorflow不支持python2.x版。<br>Anaconda3中内置的python为3.x版本（Anaconda2中内置的python为2.x版本），不过最新的Anaconda内置python为3.6版，为了避免潜在的麻烦，我安装了较新的历史版本（没错，Anaconda可以切换python版本，不过我之前在Anaconda2下安装python3后出现了一些问题，没时间较真了）。</p>
+<p><a href="https://repo.continuum.io/archive/index.html" target="_blank">Anaconda 官网历史版本下载</a></p>
+<p><a href="http://python.jobbole.com/86236/" target="_blank">一篇不错的入门教程</a></p>
+</blockquote>
+</li>
+<li><p><strong>tensorflow_gpu-1.0.1-cp35-cp35m-win_amd64.whl</strong></p>
+<blockquote>
+<p>  <a href="https://github.com/tensorflow/tensorflow" target="_blank">tensorflow</a>在github的提供了以下几个版本：<br></p>
+<ul>
+<li>Linux CPU-only: Python 2 / Python 3.4 / Python 3.5<br></li>
+<li>Linux GPU: Python 2 / Python 3.4 / Python 3.5<br></li>
+<li>Mac CPU-only: Python 2 / Python 3 <br></li>
+<li>Mac GPU: Python 2 / Python 3 <br></li>
+<li>Windows CPU-only: Python 3.5 64-bit<br></li>
+<li><a href="https://ci.tensorflow.org/view/Nightly/job/nightly-win/DEVICE=gpu,OS=windows/lastSuccessfulBuild/artifact/cmake_build/tf_python/dist/tensorflow_gpu-1.0.1-cp35-cp35m-win_amd64.whl" target="_blank">Windows GPU: Python 3.5 64-bit</a><br></li>
+<li>Android: demo APK, native libs</li>
+</ul>
+</blockquote>
+</li>
+<li><p><strong>DirectX SDK</strong></p>
+<blockquote>
+<p><a href="https://www.microsoft.com/en-us/download/details.aspx?id=6812" target="_blank">官网下载</a></p>
+</blockquote>
+</li>
+<li><p><strong>VS2015/2013/2012</strong></p>
+<blockquote>
+<p><strong>安装cuda前必须先安装一款VS</strong>，具体安装哪款，请参照下面对于cuda的介绍。</p>
+</blockquote>
+</li>
+<li><p><strong>cudnn-8.0-windows10-x64-v5.1</strong></p>
+<blockquote>
+<p>针对深度神经网络采用GPU计算的加速库，下载解压后你会得到3个.dll文件。</p>
+<p><a href="https://developer.nvidia.com/cudnn" target="_blank">官网下载（下载需要注册，并且回答一些问题）</a></p>
+</blockquote>
+</li>
+</ul>
+<h2 id="安装-cuda"><a href="#安装-cuda" class="headerlink" title="安装 cuda"></a>安装 cuda</h2><blockquote>
+<p>cuda是一种并行计算平台，可以利用gpu进行并行计算。<br><strong>请注意，tensorflow1.x-gpu版只支持cuda8.x版本</strong>，<a href="https://github.com/tensorflow/tensorflow/issues/8161" target="_blank" rel="noopener">你可以在这里确认这个问题</a></p>
+</blockquote>
+<p>  操作系统对cuda8的支持（常用的系统应该都没问题，即使在cross情况下——32位的系统在64位机器上）:<br></p>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">Operating System</th>
+<th style="text-align:center">Native x86_64</th>
+<th style="text-align:center">Cross (x86_32 on x86_64)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">Windows 10</td>
+<td style="text-align:center">YES</td>
+<td style="text-align:center">YES</td>
+</tr>
+<tr>
+<td style="text-align:center">Windows 8.1</td>
+<td style="text-align:center">YES</td>
+<td style="text-align:center">YES</td>
+</tr>
+<tr>
+<td style="text-align:center">Windows 7</td>
+<td style="text-align:center">YES</td>
+<td style="text-align:center">YES</td>
+</tr>
+<tr>
+<td style="text-align:center">Windows Server 2012 R2</td>
+<td style="text-align:center">YES</td>
+<td style="text-align:center">NO</td>
+</tr>
+<tr>
+<td style="text-align:center">Windows Server 2008 R2 DEPRECATED</td>
+<td style="text-align:center">YES</td>
+<td style="text-align:center">YES</td>
+</tr>
+</tbody>
+</table>
+<p>VS对cuda8的支持(<strong>注意cross情况</strong>):</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:left">Compiler IDE</th>
+<th style="text-align:left">Operating System</th>
+<th style="text-align:center">Native x86_64</th>
+<th style="text-align:center">Cross (x86_32 on x86_64)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left">Visual C++ 14.0</td>
+<td style="text-align:left">Visual Studio 2015</td>
+<td style="text-align:center">YES</td>
+<td style="text-align:center">YES</td>
+</tr>
+<tr>
+<td style="text-align:left">Visual C++ 14.0</td>
+<td style="text-align:left"><strong>Visual Studio Community 2015</strong></td>
+<td style="text-align:center">YES</td>
+<td style="text-align:center"><strong>NO</strong></td>
+</tr>
+<tr>
+<td style="text-align:left">Visual C++ 12.0</td>
+<td style="text-align:left">Visual Studio 2013</td>
+<td style="text-align:center">YES</td>
+<td style="text-align:center">YES</td>
+</tr>
+<tr>
+<td style="text-align:left">Visual C++ 11.0</td>
+<td style="text-align:left">Visual Studio 2012</td>
+<td style="text-align:center">YES</td>
+<td style="text-align:center">YES</td>
+</tr>
+<tr>
+<td style="text-align:left">Visual C++ 10.0 DEPRECATED</td>
+<td style="text-align:left">Visual Studio 2010</td>
+<td style="text-align:center">YES</td>
+<td style="text-align:center">YES</td>
+</tr>
+</tbody>
+</table>
+<p><a href="http://docs.nvidia.com/cuda/cuda-installation-guide-microsoft-windows/index.html#compiling-examples__valid-results-from-sample-cuda-bandwidthtest-program" target="_blank">cuda官网安装教程（这里有上面两张表格）</a></p>
+<blockquote>
+<p>我之前就不幸地安装了唯一一种不支持的情况，安装Visual Studio Community 2015 32bit在我64bit笔记本上，报了一堆错，卸载后安装vs2013后解决问题。<br>到这里你就可以根据自己的情况安装对应的VS了。</p>
+</blockquote>
+<p><a href="https://developer.nvidia.com/cuda-downloads" target="_blank">官网下载</a></p>
+<hr>
+<h2 id="一些问题"><a href="#一些问题" class="headerlink" title="一些问题"></a>一些问题</h2><ul>
+<li><strong>cudnn是必要的</strong><br>我之前参考了一些教程，以为cudnn只是为了提速，并不是必须的，就没有安装，结果出错。在<a href="https://www.tensorflow.org/install/install_windows" target="_blank" rel="noopener">tensorflow官网安装教程</a>中，要求cudnn是必装的，并且要将动态链接库文件添加到环境变量中，我照做后仍报错，后来参照<a href="http://www.jianshu.com/p/c245d46d43f0" target="_blank" rel="noopener">这篇教程</a>将3个.dll文件拷贝到duda安装目录下对应路径下，解决问题。</li>
+</ul>
+
       
 
+      
+        <div class="page-reward">
+          <a href="javascript:;" class="page-reward-btn tooltip-top">
+            <div class="tooltip tooltip-east">
+            <span class="tooltip-item">
+              赏
+            </span>
+            <span class="tooltip-content">
+              <span class="tooltip-text">
+                <span class="tooltip-inner">
+                  <p class="reward-p"><i class="icon icon-quo-left"></i>谢谢你请我吃糖果<i class="icon icon-quo-right"></i></p>
+                  <div class="reward-box">
+                    
+                    
+                  </div>
+                </span>
+              </span>
+            </span>
+          </div>
+          </a>
+        </div>
       
     </div>
     <div class="article-info article-info-index">
@@ -197,16 +354,75 @@
       
 
       
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2018/04/29/install-tf-on-win10/">展开全文 >></a>
-        </p>
-      
 
+      
+        
+<div class="share-btn share-icons tooltip-left">
+  <div class="tooltip tooltip-east">
+    <span class="tooltip-item">
+      <a href="javascript:;" class="share-sns share-outer">
+        <i class="icon icon-share"></i>
+      </a>
+    </span>
+    <span class="tooltip-content">
+      <div class="share-wrap">
+        <div class="share-icons">
+          <a class="weibo share-sns" href="javascript:;" data-type="weibo">
+            <i class="icon icon-weibo"></i>
+          </a>
+          <a class="weixin share-sns wxFab" href="javascript:;" data-type="weixin">
+            <i class="icon icon-weixin"></i>
+          </a>
+          <a class="qq share-sns" href="javascript:;" data-type="qq">
+            <i class="icon icon-qq"></i>
+          </a>
+          <a class="douban share-sns" href="javascript:;" data-type="douban">
+            <i class="icon icon-douban"></i>
+          </a>
+          <a class="qzone share-sns" href="javascript:;" data-type="qzone">
+            <i class="icon icon-qzone"></i>
+          </a>
+          <a class="facebook share-sns" href="javascript:;" data-type="facebook">
+            <i class="icon icon-facebook"></i>
+          </a>
+          <a class="twitter share-sns" href="javascript:;" data-type="twitter">
+            <i class="icon icon-twitter"></i>
+          </a>
+          <a class="google share-sns" href="javascript:;" data-type="google">
+            <i class="icon icon-google"></i>
+          </a>
+        </div>
+      </div>
+    </span>
+  </div>
+</div>
+
+<div class="page-modal wx-share js-wx-box">
+    <a class="close js-modal-close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <div class="wx-qrcode">
+      <img src="//pan.baidu.com/share/qrcode?url=http://yoursite.com/2018/04/29/install-tf-on-win10/" alt="微信分享二维码">
+    </div>
+</div>
+
+<div class="mask js-mask"></div>
       
       <div class="clearfix"></div>
     </div>
   </div>
 </article>
+
+  
+<nav id="article-nav">
+  
+  
+    <a href="/2018/04/29/hello-world/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">Hello World</div>
+      <i class="icon-circle-right"></i>
+    </a>
+  
+</nav>
+
 
 <aside class="wrap-side-operation">
     <div class="mod-side-operation">
@@ -226,71 +442,14 @@
 
 
 
-
   
-    <article id="post-hello-world" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
   
-    <h1 itemprop="name">
-      <a class="article-title" href="/2018/04/29/hello-world/">Hello World</a>
-    </h1>
   
 
-        
-        <a href="/2018/04/29/hello-world/" class="archive-article-date">
-  	<time datetime="2018-04-28T19:02:33.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-04-29</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>打算搭建个博客，记录学习经验。<br>想想还有点小激动呢^_^</p>
-
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-      
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2018/04/29/hello-world/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
+  
 
   
+
   
 
 
@@ -313,8 +472,8 @@
     <script>
 	var yiliaConfig = {
 		mathjax: false,
-		isHome: true,
-		isPost: false,
+		isHome: false,
+		isPost: true,
 		isArchive: false,
 		isTag: false,
 		isCategory: false,
