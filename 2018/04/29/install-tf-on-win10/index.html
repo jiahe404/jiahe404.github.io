@@ -6,20 +6,20 @@
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge" >
   <link rel="dns-prefetch" href="http://yoursite.com">
-  <title>Windows 10 下安装Tensorflow | HeBlog</title>
+  <title>Windows 10 下安装Tensorflow GPU版 | HeBlog</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="Windows 10 下安装Tensorflow1.0.1-GPU之前在自己的windows上安装了tensorflow1.0.1-CPU版，后来想用gpu进行计算，于是安装gpu版。没想到软件之间的依赖关系、版本等导致数种问题，百度谷歌良久才调通程序，特记下曲折的安装过程和一些细节，尽量解释选择软件版本的原因，希望能减轻读者的痛苦。">
+  <meta name="description" content="之前在自己的windows上安装了tensorflow1.0.1-CPU版，后来想用gpu进行计算，于是安装gpu版。没想到软件之间的依赖关系、版本等导致数种问题，百度谷歌良久才调通程序，特记下曲折的安装过程和一些细节，尽量解释选择软件版本的原因，希望能减轻读者的痛苦。">
 <meta name="keywords" content="tensorflow">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Windows 10 下安装Tensorflow">
+<meta property="og:title" content="Windows 10 下安装Tensorflow GPU版">
 <meta property="og:url" content="http://yoursite.com/2018/04/29/install-tf-on-win10/index.html">
 <meta property="og:site_name" content="HeBlog">
-<meta property="og:description" content="Windows 10 下安装Tensorflow1.0.1-GPU之前在自己的windows上安装了tensorflow1.0.1-CPU版，后来想用gpu进行计算，于是安装gpu版。没想到软件之间的依赖关系、版本等导致数种问题，百度谷歌良久才调通程序，特记下曲折的安装过程和一些细节，尽量解释选择软件版本的原因，希望能减轻读者的痛苦。">
+<meta property="og:description" content="之前在自己的windows上安装了tensorflow1.0.1-CPU版，后来想用gpu进行计算，于是安装gpu版。没想到软件之间的依赖关系、版本等导致数种问题，百度谷歌良久才调通程序，特记下曲折的安装过程和一些细节，尽量解释选择软件版本的原因，希望能减轻读者的痛苦。">
 <meta property="og:locale" content="default">
-<meta property="og:updated_time" content="2018-04-29T09:12:57.000Z">
+<meta property="og:updated_time" content="2018-04-29T10:26:51.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Windows 10 下安装Tensorflow">
-<meta name="twitter:description" content="Windows 10 下安装Tensorflow1.0.1-GPU之前在自己的windows上安装了tensorflow1.0.1-CPU版，后来想用gpu进行计算，于是安装gpu版。没想到软件之间的依赖关系、版本等导致数种问题，百度谷歌良久才调通程序，特记下曲折的安装过程和一些细节，尽量解释选择软件版本的原因，希望能减轻读者的痛苦。">
+<meta name="twitter:title" content="Windows 10 下安装Tensorflow GPU版">
+<meta name="twitter:description" content="之前在自己的windows上安装了tensorflow1.0.1-CPU版，后来想用gpu进行计算，于是安装gpu版。没想到软件之间的依赖关系、版本等导致数种问题，百度谷歌良久才调通程序，特记下曲折的安装过程和一些细节，尽量解释选择软件版本的原因，希望能减轻读者的痛苦。">
   
     <link rel="alternative" href="/atom.xml" title="HeBlog" type="application/atom+xml">
   
@@ -44,11 +44,11 @@
     <canvas id="anm-canvas" class="anm-canvas"></canvas>
     <div class="left-col" q-class="show:isShow">
       
-<div class="overlay" style="background: #4d4d4d"></div>
+<div class="overlay" style="background: #222"></div>
 <div class="intrude-less">
 	<header id="header" class="inner">
 		<a href="/" class="profilepic">
-			<img src="/spider.jpg" class="js-avatar">
+			<img src="/img/wc_avatar.jpg" class="js-avatar">
 		</a>
 		<hgroup>
 		  <h1 class="header-author"><a href="/">Parker</a></h1>
@@ -71,10 +71,6 @@
     			
             
     			
-    			<a q-on="click: openSlider(e, 'friends')" href="javascript:void(0)">友链</a>
-    			
-            
-    			
     			<a q-on="click: openSlider(e, 'aboutme')" href="javascript:void(0)">关于我</a>
     			
             
@@ -82,13 +78,7 @@
 		<nav class="header-nav">
 			<div class="social">
 				
-					<a class="github" target="_blank" href="#" title="github"><i class="icon-github"></i></a>
-		        
-					<a class="weibo" target="_blank" href="#" title="weibo"><i class="icon-weibo"></i></a>
-		        
-					<a class="rss" target="_blank" href="#" title="rss"><i class="icon-rss"></i></a>
-		        
-					<a class="zhihu" target="_blank" href="#" title="zhihu"><i class="icon-zhihu"></i></a>
+					<a class="github" target="_blank" href="https://github.com/jiahe404" title="github"><i class="icon-github"></i></a>
 		        
 			</div>
 		</nav>
@@ -99,14 +89,14 @@
     <div class="mid-col" q-class="show:isShow,hide:isShow|isFalse">
       
 <nav id="mobile-nav">
-  	<div class="overlay js-overlay" style="background: #4d4d4d"></div>
+  	<div class="overlay js-overlay" style="background: #222"></div>
 	<div class="btnctn js-mobile-btnctn">
   		<div class="slider-trigger list" q-on="click: openSlider(e)"><i class="icon icon-sort"></i></div>
 	</div>
 	<div class="intrude-less">
 		<header id="header" class="inner">
 			<div class="profilepic">
-				<img src="" class="js-avatar">
+				<img src="/img/wc_avatar.jpg" class="js-avatar">
 			</div>
 			<hgroup>
 			  <h1 class="header-author js-header-author">Parker</h1>
@@ -123,13 +113,7 @@
 			<nav class="header-nav">
 				<div class="social">
 					
-						<a class="github" target="_blank" href="#" title="github"><i class="icon-github"></i></a>
-			        
-						<a class="weibo" target="_blank" href="#" title="weibo"><i class="icon-weibo"></i></a>
-			        
-						<a class="rss" target="_blank" href="#" title="rss"><i class="icon-rss"></i></a>
-			        
-						<a class="zhihu" target="_blank" href="#" title="zhihu"><i class="icon-zhihu"></i></a>
+						<a class="github" target="_blank" href="https://github.com/jiahe404" title="github"><i class="icon-github"></i></a>
 			        
 				</div>
 			</nav>
@@ -162,7 +146,7 @@
         
   
     <h1 class="article-title" itemprop="name">
-      Windows 10 下安装Tensorflow
+      Windows 10 下安装Tensorflow GPU版
     </h1>
   
 
@@ -175,7 +159,7 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <h1 id="Windows-10-下安装Tensorflow1-0-1-GPU"><a href="#Windows-10-下安装Tensorflow1-0-1-GPU" class="headerlink" title="Windows 10 下安装Tensorflow1.0.1-GPU"></a>Windows 10 下安装Tensorflow1.0.1-GPU</h1><p>之前在自己的windows上安装了tensorflow1.0.1-CPU版，后来想用gpu进行计算，于是安装gpu版。没想到软件之间的依赖关系、版本等导致数种问题，百度谷歌良久才调通程序，特记下曲折的安装过程和一些细节，尽量解释选择软件版本的原因，希望能减轻读者的痛苦。<br><a id="more"></a></p>
+        <p>之前在自己的windows上安装了tensorflow1.0.1-CPU版，后来想用gpu进行计算，于是安装gpu版。没想到软件之间的依赖关系、版本等导致数种问题，百度谷歌良久才调通程序，特记下曲折的安装过程和一些细节，尽量解释选择软件版本的原因，希望能减轻读者的痛苦。<br><a id="more"></a></p>
 <h2 id="我的环境"><a href="#我的环境" class="headerlink" title="我的环境"></a>我的环境</h2><ul>
 <li><strong>操作系统：Windows 10 64bit</strong></li>
 <li><strong>显卡型号：GeForce GTX 950M</strong></li>
@@ -324,9 +308,19 @@
             <span class="tooltip-content">
               <span class="tooltip-text">
                 <span class="tooltip-inner">
-                  <p class="reward-p"><i class="icon icon-quo-left"></i>谢谢你请我吃糖果<i class="icon icon-quo-right"></i></p>
+                  <p class="reward-p"><i class="icon icon-quo-left"></i>谢谢请我吃糖^_^<i class="icon icon-quo-right"></i></p>
                   <div class="reward-box">
                     
+                    <div class="reward-box-item">
+                      <img class="reward-img" src="/img/al.jpg">
+                      <span class="reward-type">支付宝</span>
+                    </div>
+                    
+                    
+                    <div class="reward-box-item">
+                      <img class="reward-img" src="/img/wc.jpg">
+                      <span class="reward-type">微信</span>
+                    </div>
                     
                   </div>
                 </span>
@@ -416,8 +410,8 @@
 <nav id="article-nav">
   
   
-    <a href="/2018/04/29/hello-world/" id="article-nav-older" class="article-nav-link-wrap">
-      <div class="article-nav-title">Hello World</div>
+    <a href="/2018/04/29/hello-blog/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">Hello Blog</div>
       <i class="icon-circle-right"></i>
     </a>
   
@@ -504,25 +498,17 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
       
       
     
-      
-      
-      
-    
     
 
     <ul style="width: 70%">
     
     
       
-      <li style="width: 33.333333333333336%" q-on="click: openSlider(e, 'innerArchive')"><a href="javascript:void(0)" q-class="active:innerArchive">所有文章</a></li>
+      <li style="width: 50%" q-on="click: openSlider(e, 'innerArchive')"><a href="javascript:void(0)" q-class="active:innerArchive">所有文章</a></li>
       
         
       
-      <li style="width: 33.333333333333336%" q-on="click: openSlider(e, 'friends')"><a href="javascript:void(0)" q-class="active:friends">友链</a></li>
-      
-        
-      
-      <li style="width: 33.333333333333336%" q-on="click: openSlider(e, 'aboutme')"><a href="javascript:void(0)" q-class="active:aboutme">关于我</a></li>
+      <li style="width: 50%" q-on="click: openSlider(e, 'aboutme')"><a href="javascript:void(0)" q-class="active:aboutme">关于我</a></li>
       
         
     </ul>
@@ -544,6 +530,10 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color1">tensorflow</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">随笔</a>
               </li>
             
             <div class="clearfix"></div>
@@ -590,43 +580,11 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
     
 
     
-    	<section class="tools-section tools-section-friends" q-show="friends">
-  		
-        <ul class="search-ul">
-          
-            <li class="search-li">
-              <a href="http://localhost:4000/" target="_blank" class="search-title"><i class="icon-quo-left icon"></i>友情链接1</a>
-            </li>
-          
-            <li class="search-li">
-              <a href="http://localhost:4000/" target="_blank" class="search-title"><i class="icon-quo-left icon"></i>友情链接2</a>
-            </li>
-          
-            <li class="search-li">
-              <a href="http://localhost:4000/" target="_blank" class="search-title"><i class="icon-quo-left icon"></i>友情链接3</a>
-            </li>
-          
-            <li class="search-li">
-              <a href="http://localhost:4000/" target="_blank" class="search-title"><i class="icon-quo-left icon"></i>友情链接4</a>
-            </li>
-          
-            <li class="search-li">
-              <a href="http://localhost:4000/" target="_blank" class="search-title"><i class="icon-quo-left icon"></i>友情链接5</a>
-            </li>
-          
-            <li class="search-li">
-              <a href="http://localhost:4000/" target="_blank" class="search-title"><i class="icon-quo-left icon"></i>友情链接6</a>
-            </li>
-          
-        </ul>
-  		
-    	</section>
-    
 
     
     	<section class="tools-section tools-section-me" q-show="aboutme">
   	  	
-  	  		<div class="aboutme-wrap" id="js-aboutme">很惭愧&lt;br&gt;&lt;br&gt;只做了一点微小的工作&lt;br&gt;谢谢大家</div>
+  	  		<div class="aboutme-wrap" id="js-aboutme">我&lt;br&gt;有&lt;br&gt;一个&lt;br&gt;&lt;br&gt;好女票</div>
   	  	
     	</section>
     
