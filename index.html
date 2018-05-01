@@ -136,6 +136,123 @@
           <div id="js-content" class="content-ll">
             
   
+    <article id="post-python2-code" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2018/04/29/python2-code/">Python2 编码问题</a>
+    </h1>
+  
+
+        
+        <a href="/2018/04/29/python2-code/" class="archive-article-date">
+  	<time datetime="2018-04-29T14:16:10.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-04-29</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="一些定义"><a href="#一些定义" class="headerlink" title="一些定义"></a>一些定义</h2><ul>
+<li><p><strong>字符(character)</strong><br><br><strong>字符</strong>是文字的最小的组成单位，其为一种抽象定义(不要与 java 或 c 中的 char 类型混淆，后者为特定计算机语言的数据类型)，取决于语言或是上下文环境，比如’A’, ‘a’为英文中的字符，’纺’,’织’是汉语中的字符(注意绞丝旁并不能称为是一个字符，因为在汉语中，它无法单独成为一个字) 。</p>
+</li>
+<li><p><strong>图像字符(glyph)</strong><br><br>人们在交谈时通过独特的发音来表达一个字符，而当在屏幕或是纸面上时，则是通过一些特定图形来表达一个字符。比如在汉字中用一条横线来表示’一’这个字符。这个图像化的形象即被称为<strong>图像字符</strong>，在计算机中可以通过矢量图表示。</p>
+</li>
+<li><p><strong>字符串(characters/string)</strong><br><br><strong>字符串</strong>由若干字符组成的串。</p>
+</li>
+<li><p><strong>码点(code point)</strong><br><br>码点也有译为码位(code position)，是一个整数，常用16进制表示。Unicode标准就是维护了一张<strong>字符与码点的映射表</strong>，说白了，就是将一个字符用某个唯一的整数表示，这样全世界的计算机上都保存这样一张表，数据传输时只需要传输一堆数字就好，再用这张表去解析，找到对应的字符即可，而无需去传输字符所对应的矢量图。这就是标准的作用。<br><br>下图是’一’的 Unicode 编码示例(图片源自<a href="https://www.charbase.com/4e00-unicode-cjk-unified-ideograph" target="_blank" rel="noopener">Charbase</a>):<br><br><img src="/img/blog/one.png" alt="one"></p>
+</li>
+</ul>
+<h2 id="既然有了-Unicode，为什么还有一众编码方式？"><a href="#既然有了-Unicode，为什么还有一众编码方式？" class="headerlink" title="既然有了 Unicode，为什么还有一众编码方式？"></a>既然有了 Unicode，为什么还有一众编码方式？</h2><p>现在我们知道了，世界上有这么一个统一的标准，那为什么还有 latin1, utf8, gbk 这些编码方式呢？为何不只用这一种编码方式，也省去了 decode, encode 的麻烦了。其实这是概念上的混淆。如果你还不知道自己错在哪了，请思考一个问题，作为程序员，我们都或多或少地了解 MVC 模式，那我想问，既然 MVC 这么好，为什么还要用 MFC(vc++框架), struts(java web 框架), ci(php 框架)呢？相信你可以理解这个荒唐的问题。</p>
+<blockquote>
+<p>MVC 是一种设计模式，一种思想，将 model，view, controller 解耦。而上面提到的几种框架，其实是对这种设计模式的针对不同的场景进行的实现。可以将 MVC当作一个类，而具体干活的，其实是需要 new 一个对象出来，也就是MFC等一众对 MVC 思想的具体实现。</p>
+</blockquote>
+<p>与 MVC 这个问题类似，Unicode 其实是多种编码体系(如ISO/IEC 10646)中的一种，而具体实现这种体系的，则为 UTF(Unicode Transformation Format)，包括 utf8, utf16, utf32等编码方式。</p>
+<blockquote>
+<p>Unicode标准<strong>的确</strong>维护了一张<strong>字符与码点的映射表</strong>，所以你可以查看某个字符的 Unicode 编码，正如在上面’一’的 Unicode 编码示例图中可见其 Unicode 编码为’\u4e00’。然而对于码点在网络传输或物理存储具体要如何操作，如码点前置0怎么处理，用多少字节表示一个字符等问题，Unicode标准并未规定，具体是由UTF来实现的。</p>
+</blockquote>
+<p>写到这里，上面提到的所有概念和内容与python没有半毛钱关系，对于任何编程语言上面的概念都是放诸四海皆准的。上文所提到的 Unicode 全部指代 Unicode 标准，千万不要和 python 中的 unicode 类型混淆(注意两个概念在本文中用首字母的大小写来区别)！</p>
+<p>每种编码方式都有各自的特点，如汉字’一’用 gbk 及 utf16 编码占2个字节，用 utf8编码则占3个字节，’a’用 utf8编码则只占一个字节，用 utf16仍然占用2个字节，而 Unicode 统一使用4个字节来表示所有字符，但是对于定长的东西，在内存中寻址就很快很方便，这也是<strong>在计算机内存中统一使用Unicode，而当要保存或传输数据时，转换成 UTF 编码</strong>(当然也可以采用其他编码)的原因。</p>
+<blockquote>
+<p>gbk是针对汉字的编码方式，虽然可以用较少的字节来表示一个汉语字符，但对于很多其他国家的字符就无能为力了，而 utf 编码则基本囊括了世界上所有语言的字符集；<br>utf16，utf32分别用2、4个字节表示一个字符，然而对于英文等语言环境来讲，一个字节完全可以表示一个字符，就会浪费存储空间。</p>
+</blockquote>
+<p>不同的编码方式都有其诞生及存在的合理性，不能只凭字符占用字节数，能表达的语言种类或是大小端处理等来衡量优劣，适合的就是最好的。所以，我们无法用一种编码方式走遍天下，那就得好好了解下如何在多种编码方式中处理数据，下面就来看下 python 中对于字符编码的处理。</p>
+<h2 id="Python2中编码的转换"><a href="#Python2中编码的转换" class="headerlink" title="Python2中编码的转换"></a>Python2中编码的转换</h2><p>在python2中，字符串可以用 unicode 或 str 这两种类型来表示。<br>unicode类型的字符串由若干Unicode字符组成，本文中称之为<strong>unicode串</strong>，注意 unicode 与 unicode串是类与实例的关系，如下面代码中，a，b，c，d都是unicode串，a，b，c，d 的类型都是unicode：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"># -*- coding: utf8 -*-</span><br><span class="line">a = u&apos;a&apos;</span><br><span class="line">b = u&apos;一&apos;</span><br><span class="line">c = u&apos;一a&apos;</span><br><span class="line">d = u&apos;一a\u4e00&apos; # 汉字&apos;一&apos;的 unicode 编码为\u4e00</span><br><span class="line">e = u&apos;一a\u4e00\x61\141&apos;</span><br><span class="line">print a, b, c, d, e</span><br><span class="line">print type(a), type(b), type(c), type(d), type(e)</span><br></pre></td></tr></table></figure></p>
+<p>输出：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">a 一 一a 一a一 一a一aa</span><br><span class="line">&lt;type &apos;unicode&apos;&gt; &lt;type &apos;unicode&apos;&gt; &lt;type &apos;unicode&apos;&gt; &lt;type &apos;unicode&apos;&gt; &lt;type &apos;unicode&apos;&gt;</span><br></pre></td></tr></table></figure></p>
+<blockquote>
+<p>如果对变量 e 的内容有疑问，可以参考<a href="http://python-reference.readthedocs.io/en/latest/docs/str/escapes.html" target="_blank" rel="noopener">这篇文章</a></p>
+</blockquote>
+<p>str类型的字符串其实为字节序列，本文中称之为<strong>str串</strong>，一个str串的编码方式是需要指定的，这点和 unicode 串很不一样。因为 unicode 串一定是由 Unicode字符组成，这个规则是确定的。但是 python 不知道一个 str 串是采用了何种编码方式，只能使用默认的编码方式来处理，这个过程就有可能出错，事实上关于字符串转码的问题大多就出现在这里。</p>
+<p>在 python2 中，将 unicode串转换成 str串称为编码(encode), 而将str串转换成 unicode串称之为解码(decode)。</p>
+<h3 id="编码-encode"><a href="#编码-encode" class="headerlink" title="编码(encode):"></a>编码(encode):</h3><p>将内存中的unicode串保存到外存时，需要将之编码(encode)为 str串(即字节序列)，看下面的例子：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"># # -*- coding: utf8 -*-</span><br><span class="line">one = u&apos;一&apos;</span><br><span class="line">with open(&apos;one.txt&apos;, &apos;w&apos;) as f:</span><br><span class="line">    f.write(one)</span><br></pre></td></tr></table></figure></p>
+<p>运行报错：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">UnicodeEncodeError: &apos;ascii&apos; codec can&apos;t encode character u&apos;\u4e00&apos; in position 0: ordinal not in range(128)</span><br></pre></td></tr></table></figure></p>
+<p>意思是说采用 ascii 编解码标准无法对’一’进行编码，这是因为f.write(one)这行代码在执行时被解释成f.write(one.encode(‘ascii’))。python 默认会采用 ascci 编解码标准对unicode串进行编码，而汉字’一’的Unicode 编码为4e00(16进制)，超出了 ascii 编解码标准的上限128，所以报错。</p>
+<p>正确做法是在将变量保存至外存时，显式地指定恰当的编码方式：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"># -*- coding: utf8 -*-</span><br><span class="line">one = u&apos;一&apos;</span><br><span class="line">with open(&apos;one.txt&apos;, &apos;w&apos;) as f:</span><br><span class="line">    f.write(one.encode(&apos;utf8&apos;))</span><br></pre></td></tr></table></figure></p>
+<h3 id="解码-decode"><a href="#解码-decode" class="headerlink" title="解码(decode):"></a>解码(decode):</h3><p>当需要将不同编码类型的字符串放在一起处理时(比如从数据库中读入一个字段，在内存中其为一个unicode串，将之与一个 utf8编码的文件中的第一行数据拼接成一个字符串)，最好将 str串解码成unicode串，看下面的代码示例：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"># -*- coding: utf8 -*-</span><br><span class="line">database_field = u&apos;一&apos;</span><br><span class="line">file_first_line = &apos;二&apos;</span><br><span class="line">print database_field, type(database_field)</span><br><span class="line">print file_first_line, type(file_first_line)</span><br><span class="line">print database_field \</span><br><span class="line">      + file_first_line  # 分行是为方便查看是哪行转换出错</span><br></pre></td></tr></table></figure></p>
+<p>运行报错：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">一 &lt;type &apos;unicode&apos;&gt;</span><br><span class="line">二 &lt;type &apos;str&apos;&gt;</span><br><span class="line">Traceback (most recent call last):</span><br><span class="line">  File &quot;/Users/baidu/PhpstormProjects/scripts_dev/python/grammer/coding.py&quot;, line 7, in &lt;module&gt;</span><br><span class="line">    + file_first_line  # 分行是为方便查看是哪行转换出错</span><br><span class="line">UnicodeDecodeError: &apos;ascii&apos; codec can&apos;t decode byte 0xe4 in position 0: ordinal not in range(128)</span><br></pre></td></tr></table></figure></p>
+<p>可以看到单独处理（输出）两个变量是没问题的，不过放在一起就完蛋了。从报错信息可以看到是对file_first_line按照ascii decode 时出错，原因不难理解，unicode串与 str串类型不一致，无法直接拼接，python 在尝试将 str串解码为 unicode 串时，采用了错误的 ascii 编解码标准。</p>
+<p>可以通过将二者统一转换成一种类型来解决：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"># -*- coding: utf8 -*-</span><br><span class="line">database_field = u&apos;一&apos;</span><br><span class="line">file_first_line = &apos;二&apos;</span><br><span class="line">print database_field, type(database_field)</span><br><span class="line">print file_first_line, type(file_first_line)</span><br><span class="line">print database_field + file_first_line.decode(&apos;utf8&apos;), \</span><br><span class="line">    type(database_field + file_first_line.decode(&apos;utf8&apos;))</span><br><span class="line">print database_field.encode(&apos;utf8&apos;) + file_first_line, \</span><br><span class="line">    type(database_field.encode(&apos;utf8&apos;) + file_first_line)</span><br></pre></td></tr></table></figure></p>
+<p>运行如下：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">一 &lt;type &apos;unicode&apos;&gt;</span><br><span class="line">二 &lt;type &apos;str&apos;&gt;</span><br><span class="line">一二 &lt;type &apos;unicode&apos;&gt;</span><br><span class="line">一二 &lt;type &apos;str&apos;&gt;</span><br></pre></td></tr></table></figure></p>
+
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color2">python</a>
+        		</li>
+      		 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">编码</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+      
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2018/04/29/python2-code/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
     <article id="post-install-tf-on-win10" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
@@ -317,7 +434,7 @@
 		toc_hide_index: true,
 		root: "/",
 		innerArchive: true,
-		showTags: false
+		showTags: true
 	}
 </script>
 
@@ -376,6 +493,14 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color3">随笔</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color2">python</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">编码</a>
               </li>
             
             <div class="clearfix"></div>
