@@ -1,6 +1,6 @@
 ---
 title: Windows 10 下安装Tensorflow GPU版
-date: 2018-04-29 09:41:04
+date: 2018-04-15
 tags:
 - tensorflow
 reward: true

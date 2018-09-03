@@ -1,5 +1,6 @@
 ---
 title: Hello Blog
+date: 2018-04-04
 brief: "哈哈"
 tag:
   - 随笔
