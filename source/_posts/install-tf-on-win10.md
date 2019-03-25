@@ -1,10 +1,11 @@
 ---
 title: Windows 10 下安装Tensorflow GPU版
-date: 2018-04-15
 tags:
-- tensorflow
+  - tensorflow
 reward: true
-brief: "test"
+brief: test
+abbrlink: 2673703756
+date: 2018-04-15 00:00:00
 ---
 
 之前在自己的windows上安装了tensorflow1.0.1-CPU版，后来想用gpu进行计算，于是安装gpu版。没想到软件之间的依赖关系、版本等导致数种问题，百度谷歌良久才调通程序，特记下曲折的安装过程和一些细节，尽量解释选择软件版本的原因，希望能减轻读者的痛苦。
