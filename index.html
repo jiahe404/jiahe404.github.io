@@ -146,6 +146,98 @@ var _hmt = _hmt || [];
           <div id="js-content" class="content-ll">
             
   
+    <article id="post-xgboost-features-importance" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/1781693973.html">xgboost 特征重要性</a>
+    </h1>
+  
+
+        
+        <a href="/1781693973.html" class="archive-article-date">
+  	<time datetime="2018-11-17T16:00:00.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-11-18</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="官方解释"><a href="#官方解释" class="headerlink" title="官方解释"></a>官方解释</h1><p>Python中的xgboost可以通过get_fscore获取特征重要性，先看看官方对于这个方法的<a href="https://xgboost.readthedocs.io/en/latest/python/python_api.html" target="_blank" rel="noopener">说明</a>:</p>
+<blockquote>
+<p>get_score(fmap=’’, importance_type=’weight’)</p>
+<p>Get feature importance of each feature. Importance type can be defined as:</p>
+<ul>
+<li>‘weight’: the number of times a feature is used to split the data across all trees.</li>
+<li>‘gain’: the average gain across all splits the feature is used in.</li>
+<li>‘cover’: the average coverage across all splits the feature is used in.</li>
+<li>‘total_gain’: the total gain across all splits the feature is used in.</li>
+<li>‘total_cover’: the total coverage across all splits the feature is used in.</li>
+</ul>
+</blockquote>
+<p>看释义不直观，下面通过训练一个简单的模型，输出这些重要性指标，再结合释义进行解释。<br>
+        
+          <a class="article-more-a" href="/1781693973.html#more">more >></a>
+        
+      
+
+      
+    </p></div>
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">xgboost</a>
+        		</li>
+      		 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color1">特征重要性</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+      
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/1781693973.html">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
     <article id="post-spider-lianjia" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
@@ -663,6 +755,14 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color3">编码</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">xgboost</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">特征重要性</a>
               </li>
             
             <div class="clearfix"></div>

@@ -6,20 +6,22 @@
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <link rel="dns-prefetch" href="http://yoursite.com">
-  <title>Hello Blog | HeBlog</title>
+  <title>xgboost 特征重要性 | HeBlog</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="打算搭建个博客，记录学习经验。想想还有点小激动呢^_^">
-<meta name="keywords" content="随笔">
+  <meta name="description" content="官方解释Python中的xgboost可以通过get_fscore获取特征重要性，先看看官方对于这个方法的说明:  get_score(fmap=’’, importance_type=’weight’) Get feature importance of each feature. Importance type can be defined as:  ‘weight’: the number">
+<meta name="keywords" content="xgboost,特征重要性">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Hello Blog">
-<meta property="og:url" content="http://yoursite.com/3393309510.html">
+<meta property="og:title" content="xgboost 特征重要性">
+<meta property="og:url" content="http://yoursite.com/1781693973.html">
 <meta property="og:site_name" content="HeBlog">
-<meta property="og:description" content="打算搭建个博客，记录学习经验。想想还有点小激动呢^_^">
+<meta property="og:description" content="官方解释Python中的xgboost可以通过get_fscore获取特征重要性，先看看官方对于这个方法的说明:  get_score(fmap=’’, importance_type=’weight’) Get feature importance of each feature. Importance type can be defined as:  ‘weight’: the number">
 <meta property="og:locale" content="default">
-<meta property="og:updated_time" content="2019-03-25T09:47:52.597Z">
+<meta property="og:image" content="http://yoursite.com/img/blog/xgboost/tree.png">
+<meta property="og:updated_time" content="2019-03-25T10:00:09.539Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Hello Blog">
-<meta name="twitter:description" content="打算搭建个博客，记录学习经验。想想还有点小激动呢^_^">
+<meta name="twitter:title" content="xgboost 特征重要性">
+<meta name="twitter:description" content="官方解释Python中的xgboost可以通过get_fscore获取特征重要性，先看看官方对于这个方法的说明:  get_score(fmap=’’, importance_type=’weight’) Get feature importance of each feature. Importance type can be defined as:  ‘weight’: the number">
+<meta name="twitter:image" content="http://yoursite.com/img/blog/xgboost/tree.png">
   
     <link rel="alternative" href="/atom.xml" title="HeBlog" type="application/atom+xml">
   
@@ -149,27 +151,58 @@ var _hmt = _hmt || [];
             <canvas data-colors="#eaeaea" data-sectionHeight="100" data-contentId="js-content" id="myCanvas1" class="anm-canvas"></canvas>
           </div>
           <div id="js-content" class="content-ll">
-            <article id="post-hello-blog" class="article article-type-post " itemscope itemprop="blogPost">
+            <article id="post-xgboost-features-importance" class="article article-type-post " itemscope itemprop="blogPost">
   <div class="article-inner">
     
       <header class="article-header">
         
   
     <h1 class="article-title" itemprop="name">
-      Hello Blog
+      xgboost 特征重要性
     </h1>
   
 
         
-        <a href="/3393309510.html" class="archive-article-date">
-  	<time datetime="2018-04-03T16:00:00.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-04-04</time>
+        <a href="/1781693973.html" class="archive-article-date">
+  	<time datetime="2018-11-17T16:00:00.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-11-18</time>
 </a>
         
       </header>
     
     <div class="article-entry" itemprop="articleBody">
       
-        <p>打算搭建个博客，记录学习经验。<br>想想还有点小激动呢^_^</p>
+        <h1 id="官方解释"><a href="#官方解释" class="headerlink" title="官方解释"></a>官方解释</h1><p>Python中的xgboost可以通过get_fscore获取特征重要性，先看看官方对于这个方法的<a href="https://xgboost.readthedocs.io/en/latest/python/python_api.html" target="_blank" rel="noopener">说明</a>:</p>
+<blockquote>
+<p>get_score(fmap=’’, importance_type=’weight’)</p>
+<p>Get feature importance of each feature. Importance type can be defined as:</p>
+<ul>
+<li>‘weight’: the number of times a feature is used to split the data across all trees.</li>
+<li>‘gain’: the average gain across all splits the feature is used in.</li>
+<li>‘cover’: the average coverage across all splits the feature is used in.</li>
+<li>‘total_gain’: the total gain across all splits the feature is used in.</li>
+<li>‘total_cover’: the total coverage across all splits the feature is used in.</li>
+</ul>
+</blockquote>
+<p>看释义不直观，下面通过训练一个简单的模型，输出这些重要性指标，再结合释义进行解释。<br><a id="more"></a></p>
+<h1 id="代码实践"><a href="#代码实践" class="headerlink" title="代码实践"></a>代码实践</h1><p>首先构造10个样例的样本，每个样例有两维特征，标签为0或1，二分类问题:<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"></span><br><span class="line">sample_num = <span class="number">10</span></span><br><span class="line">feature_num = <span class="number">2</span></span><br><span class="line"></span><br><span class="line">np.random.seed(<span class="number">0</span>)</span><br><span class="line">data = np.random.randn(sample_num, feature_num)</span><br><span class="line">np.random.seed(<span class="number">0</span>)</span><br><span class="line">label = np.random.randint(<span class="number">0</span>, <span class="number">2</span>, sample_num)</span><br></pre></td></tr></table></figure></p>
+<p>输出data和label:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"># data:</span><br><span class="line">array([[ 1.76405235,  0.40015721],</span><br><span class="line">       [ 0.97873798,  2.2408932 ],</span><br><span class="line">       [ 1.86755799, -0.97727788],</span><br><span class="line">       [ 0.95008842, -0.15135721],</span><br><span class="line">       [-0.10321885,  0.4105985 ],</span><br><span class="line">       [ 0.14404357,  1.45427351],</span><br><span class="line">       [ 0.76103773,  0.12167502],</span><br><span class="line">       [ 0.44386323,  0.33367433],</span><br><span class="line">       [ 1.49407907, -0.20515826],</span><br><span class="line">       [ 0.3130677 , -0.85409574]])</span><br><span class="line"># label:</span><br><span class="line">array([0, 1, 1, 0, 1, 1, 1, 1, 1, 1])</span><br></pre></td></tr></table></figure></p>
+<p>训练，这里为了便于下面计算，将树深度设为3(‘max_depth’: 3)，只用一棵树(num_boost_round=1):</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> xgboost <span class="keyword">as</span> xgb</span><br><span class="line"></span><br><span class="line">train_data = xgb.DMatrix(data, label=label)</span><br><span class="line">params = &#123;<span class="string">'max_depth'</span>: <span class="number">3</span>&#125;</span><br><span class="line">bst = xgb.train(params, train_data, num_boost_round=<span class="number">1</span>)</span><br></pre></td></tr></table></figure>
+<p>输出重要性指标:<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span> importance_type <span class="keyword">in</span> (<span class="string">'weight'</span>, <span class="string">'gain'</span>, <span class="string">'cover'</span>, <span class="string">'total_gain'</span>, <span class="string">'total_cover'</span>):</span><br><span class="line">    print(<span class="string">'%s: '</span> % importance_type, bst.get_score(importance_type=importance_type))</span><br></pre></td></tr></table></figure></p>
+<p>结果:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">weight:  &#123;&apos;f0&apos;: 1, &apos;f1&apos;: 2&#125;</span><br><span class="line">gain:  &#123;&apos;f0&apos;: 0.265151441, &apos;f1&apos;: 0.375000015&#125;</span><br><span class="line">cover:  &#123;&apos;f0&apos;: 10.0, &apos;f1&apos;: 4.0&#125;</span><br><span class="line">total_gain:  &#123;&apos;f0&apos;: 0.265151441, &apos;f1&apos;: 0.75000003&#125;</span><br><span class="line">total_cover:  &#123;&apos;f0&apos;: 10.0, &apos;f1&apos;: 8.0&#125;</span><br></pre></td></tr></table></figure></p>
+<p>画出唯一的一棵树图:<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">xgb.to_graphviz(bst, num_trees=<span class="number">0</span>)</span><br></pre></td></tr></table></figure></p>
+<p><img src="/img/blog/xgboost/tree.png" alt="one"></p>
+<p>下面就结合这张图，解释下各指标含义:</p>
+<ol>
+<li>weight:  {‘f0’: 1, ‘f1’: 2}<br>在所有树中，某特征被用来分裂节点的次数，在本例中，可见分裂第1个节点时用到f0，分裂第2，3个节点时用到f1，所以weight_f0 = 1, weight_f1 = 2。</li>
+<li>total_cover:  {‘f0’: 10.0, ‘f1’: 8.0}<br>第1个节点，f0被用来对所有10个样例进行分裂，之后的节点中f0没再被用到，所以f0的total_cover为10.0，此时f0 &gt;= 0.855563045的样例有5个，落入右子树；<br>第2个节点，f1被用来对上面落入右子树的5个样例进行分裂，其中f1 &gt;= -0.178257734的样例有3个，落入右子树；<br>第3个节点，f1被用来对上面落入右子树的3个样例进行分裂。<br>总结起来，f0在第1个节点分裂了10个样例，所以total_cover_f0 = 10，f1在第2、3个节点分别用于分裂5、3个样例，所以total_cover_f1 = 5 + 3 = 8。total_cover表示在所有树中，某特征在每次分裂节点时处理(覆盖)的所有样例的数量。</li>
+<li>cover:  {‘f0’: 10.0, ‘f1’: 4.0}<br>cover = total_cover / weight，在本例中，cover_f0 = 10 / 1，cover_f1 = 8 / 2 = 4.</li>
+<li>total_gain:  {‘f0’: 0.265151441, ‘f1’: 0.75000003}<br>在所有树中，某特征在每次分裂节点时带来的总增益，如果用熵或基尼不纯衡量分裂前后的信息量分别为i0和i1，则增益为(i0 - i1)。</li>
+<li>gain:  {‘f0’: 0.265151441, ‘f1’: 0.375000015}<br>gain = total_gain / weight，在本例中，gain_f0 = 0.265151441 / 1，gain_f1 = 75000003 / 2 = 375000015.</li>
+</ol>
+<p>在平时的使用中，多用total_gain来对特征重要性进行排序。</p>
+<h1 id="By-The-Way"><a href="#By-The-Way" class="headerlink" title="By The Way"></a>By The Way</h1><p>构造xgboost分类器还有另外一种方式，这种方式类似于sklearn中的分类器，采用fit, transform形式训练模型:<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> xgboost <span class="keyword">import</span> XGBClassifier</span><br><span class="line"></span><br><span class="line">cls = XGBClassifier(base_score=<span class="number">0.5</span>, booster=<span class="string">'gbtree'</span>, colsample_bylevel=<span class="number">1</span>,</span><br><span class="line">       colsample_bytree=<span class="number">1</span>, gamma=<span class="number">0</span>, learning_rate=<span class="number">0.07</span>, max_delta_step=<span class="number">0</span>,</span><br><span class="line">       max_depth=<span class="number">3</span>, min_child_weight=<span class="number">1</span>, missing=<span class="keyword">None</span>, n_estimators=<span class="number">300</span>,</span><br><span class="line">       n_jobs=<span class="number">1</span>, nthread=<span class="keyword">None</span>, objective=<span class="string">'binary:logistic'</span>, random_state=<span class="number">0</span>,</span><br><span class="line">       reg_alpha=<span class="number">0</span>, reg_lambda=<span class="number">1</span>, scale_pos_weight=<span class="number">1</span>, seed=<span class="keyword">None</span>,</span><br><span class="line">       silent=<span class="keyword">True</span>, subsample=<span class="number">1</span>)</span><br><span class="line"><span class="comment"># 训练模型</span></span><br><span class="line"><span class="comment"># cls.fit(data, label)</span></span><br></pre></td></tr></table></figure></p>
+<p>采用下面的方式获取特征重要性指标:<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span> importance_type <span class="keyword">in</span> (<span class="string">'weight'</span>, <span class="string">'gain'</span>, <span class="string">'cover'</span>, <span class="string">'total_gain'</span>, <span class="string">'total_cover'</span>):</span><br><span class="line">    print(<span class="string">'%s: '</span> % importance_type, cls.get_booster().get_score(importance_type=importance_type))</span><br></pre></td></tr></table></figure></p>
 
       
 
@@ -183,7 +216,11 @@ var _hmt = _hmt || [];
 		<ul class="article-tag-list">
 			 
         		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">随笔</a>
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">xgboost</a>
+        		</li>
+      		 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color1">特征重要性</a>
         		</li>
       		
 		</ul>
@@ -239,7 +276,7 @@ var _hmt = _hmt || [];
     <a class="close js-modal-close" href="javascript:;"><i class="icon icon-close"></i></a>
     <p>扫一扫，分享到微信</p>
     <div class="wx-qrcode">
-      <img src="//pan.baidu.com/share/qrcode?url=http://yoursite.com/3393309510.html" alt="微信分享二维码">
+      <img src="//pan.baidu.com/share/qrcode?url=http://yoursite.com/1781693973.html" alt="微信分享二维码">
     </div>
 </div>
 
@@ -253,15 +290,11 @@ var _hmt = _hmt || [];
   
 <nav id="article-nav">
   
-    <a href="/2673703756.html" id="article-nav-newer" class="article-nav-link-wrap">
-      <i class="icon-circle-left"></i>
-      <div class="article-nav-title">
-        
-          Windows 10 下安装Tensorflow GPU版
-        
-      </div>
-    </a>
   
+    <a href="/2739431502.html" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">链家小区均价数据爬取</div>
+      <i class="icon-circle-right"></i>
+    </a>
   
 </nav>
 
