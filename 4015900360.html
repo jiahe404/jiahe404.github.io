@@ -6,15 +6,26 @@
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <link rel="dns-prefetch" href="http://yoursite.com">
-  <title>Tag: tensorflow | HeBlog</title>
+  <title>python数据分析之dataframe VS sql | HeBlog</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta property="og:type" content="website">
-<meta property="og:title" content="HeBlog">
-<meta property="og:url" content="http://yoursite.com/tags/tensorflow/index.html">
+  <meta name="description" content="在分析数据时，dataframe的很多方法和sql是类似的，本文总结一些二者中的相通问题，方便互相转移，下面以mysql语法为例。">
+<meta name="keywords" content="python,pandas,dataframe,sql">
+<meta property="og:type" content="article">
+<meta property="og:title" content="python数据分析之dataframe VS sql">
+<meta property="og:url" content="http://yoursite.com/4015900360.html">
 <meta property="og:site_name" content="HeBlog">
+<meta property="og:description" content="在分析数据时，dataframe的很多方法和sql是类似的，本文总结一些二者中的相通问题，方便互相转移，下面以mysql语法为例。">
 <meta property="og:locale" content="default">
+<meta property="og:image" content="http://yoursite.com/img/blog/df/distinct1.png">
+<meta property="og:image" content="http://yoursite.com/img/blog/df/group1.png">
+<meta property="og:image" content="http://yoursite.com/img/blog/df/group2.png">
+<meta property="og:image" content="http://yoursite.com/img/blog/df/group3.png">
+<meta property="og:image" content="http://yoursite.com/img/blog/df/group4.png">
+<meta property="og:updated_time" content="2019-03-27T08:44:58.525Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="HeBlog">
+<meta name="twitter:title" content="python数据分析之dataframe VS sql">
+<meta name="twitter:description" content="在分析数据时，dataframe的很多方法和sql是类似的，本文总结一些二者中的相通问题，方便互相转移，下面以mysql语法为例。">
+<meta name="twitter:image" content="http://yoursite.com/img/blog/df/distinct1.png">
   
     <link rel="alternative" href="/atom.xml" title="HeBlog" type="application/atom+xml">
   
@@ -144,60 +155,213 @@ var _hmt = _hmt || [];
             <canvas data-colors="#eaeaea" data-sectionHeight="100" data-contentId="js-content" id="myCanvas1" class="anm-canvas"></canvas>
           </div>
           <div id="js-content" class="content-ll">
-            
-  
-  
+            <article id="post-tricks_of_dataframe_sql" class="article article-type-post " itemscope itemprop="blogPost">
+  <div class="article-inner">
     
-    
-      
-      
-      <section class="archives-wrap">
-        <div class="archive-year-wrap">
-          <a href="/archives/2018" class="archive-year">2018</a>
-        </div>
-        <div class="archives">
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2673703756.html" class="archive-article-date">
-  	<time datetime="2018-04-14T16:00:00.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-04-15</time>
-</a>
-        </div>
-    	 
+      <header class="article-header">
+        
   
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2673703756.html">Windows 10 下安装Tensorflow GPU版</a>
+    <h1 class="article-title" itemprop="name">
+      python数据分析之dataframe VS sql
     </h1>
   
 
-        <div class="article-info info-on-right">
-          
+        
+        <a href="/4015900360.html" class="archive-article-date">
+  	<time datetime="2018-11-21T16:00:00.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-11-22</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>在分析数据时，dataframe的很多方法和sql是类似的，本文总结一些二者中的相通问题，方便互相转移，下面以mysql语法为例。<br><a id="more"></a></p>
+<h1 id="数据准备"><a href="#数据准备" class="headerlink" title="数据准备"></a>数据准备</h1><p>为了同时使用sql和dataframe进行分析，分别准备数据库和文本文件(下面的sql和python代码都可以直接运行)。</p>
+<h2 id="1-mysql表"><a href="#1-mysql表" class="headerlink" title="1. mysql表"></a>1. mysql表</h2><p>假如有一个table，包含一些影视音乐作品，数据分4列，分别为一、二级分类，作品名，评分:</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">create</span> <span class="keyword">table</span> multi_category_data (</span><br><span class="line">    cat1 <span class="built_in">varchar</span>(<span class="number">8</span>),</span><br><span class="line">    cat2 <span class="built_in">varchar</span>(<span class="number">8</span>),</span><br><span class="line">    <span class="keyword">name</span> <span class="built_in">varchar</span>(<span class="number">8</span>),</span><br><span class="line">    score <span class="built_in">int</span></span><br><span class="line">)<span class="keyword">engine</span>=myisam <span class="keyword">default</span> <span class="keyword">charset</span>=utf8;</span><br><span class="line"></span><br><span class="line"><span class="keyword">insert</span> <span class="keyword">into</span> multi_category_data <span class="keyword">values</span>(<span class="string">'影视'</span>, <span class="string">'电影'</span>, <span class="string">'a'</span>, <span class="number">5</span>);</span><br><span class="line"><span class="keyword">insert</span> <span class="keyword">into</span> multi_category_data <span class="keyword">values</span>(<span class="string">'影视'</span>, <span class="string">'连续剧'</span>, <span class="string">'b'</span>, <span class="number">6</span>);</span><br><span class="line"><span class="keyword">insert</span> <span class="keyword">into</span> multi_category_data <span class="keyword">values</span>(<span class="string">'影视'</span>, <span class="string">'连续剧'</span>, <span class="string">'c'</span>, <span class="number">7</span>);</span><br><span class="line"><span class="keyword">insert</span> <span class="keyword">into</span> multi_category_data <span class="keyword">values</span>(<span class="string">'音乐'</span>, <span class="string">'流行'</span>, <span class="string">'d'</span>, <span class="number">10</span>);</span><br><span class="line"><span class="keyword">insert</span> <span class="keyword">into</span> multi_category_data <span class="keyword">values</span>(<span class="string">'音乐'</span>, <span class="string">'流行'</span>, <span class="string">'e'</span>, <span class="number">8</span>);</span><br><span class="line"><span class="keyword">insert</span> <span class="keyword">into</span> multi_category_data <span class="keyword">values</span>(<span class="string">'音乐'</span>, <span class="string">'民谣'</span>, <span class="string">'f'</span>, <span class="number">9</span>);</span><br><span class="line"><span class="keyword">insert</span> <span class="keyword">into</span> multi_category_data <span class="keyword">values</span>(<span class="string">'音乐'</span>, <span class="string">'摇滚'</span>, <span class="string">'g'</span>, <span class="number">4</span>);</span><br><span class="line"><span class="keyword">insert</span> <span class="keyword">into</span> multi_category_data <span class="keyword">values</span>(<span class="string">'音乐'</span>, <span class="string">'摇滚'</span>, <span class="string">'h'</span>, <span class="number">4</span>);</span><br></pre></td></tr></table></figure>
+<h2 id="2-文本文件"><a href="#2-文本文件" class="headerlink" title="2. 文本文件"></a>2. 文本文件</h2><p>为了用dataframe分析，将同样的数据保存在csv_file文件中，并以dataframe格式保存到变量data:<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">multi_category_data = <span class="string">"""</span></span><br><span class="line"><span class="string">cat1,cat2,name,score</span></span><br><span class="line"><span class="string">影视,电影,a,5</span></span><br><span class="line"><span class="string">影视,连续剧,b,6</span></span><br><span class="line"><span class="string">影视,连续剧,c,7</span></span><br><span class="line"><span class="string">音乐,流行,d,10</span></span><br><span class="line"><span class="string">音乐,流行,e,8</span></span><br><span class="line"><span class="string">音乐,民谣,f,9</span></span><br><span class="line"><span class="string">音乐,摇滚,g,4</span></span><br><span class="line"><span class="string">"""</span></span><br><span class="line">csv_file = io.StringIO(multi_category_data)</span><br><span class="line">data = pd.read_csv(csv_file, sep=<span class="string">','</span>, names=<span class="keyword">None</span>)</span><br></pre></td></tr></table></figure></p>
+<h1 id="分析实战"><a href="#分析实战" class="headerlink" title="分析实战"></a>分析实战</h1><h2 id="1-去重问题-——-drop-duplicates-VS-distinct"><a href="#1-去重问题-——-drop-duplicates-VS-distinct" class="headerlink" title="1. 去重问题 —— drop_duplicates() VS distinct"></a>1. 去重问题 —— drop_duplicates() VS distinct</h2><p>drop_duplicates()方法可以对数据按列名去重，类似于sql中的distinct。  </p>
+<p>现在我想了解作品都有哪些一、二级分类，可以如下实现:</p>
+<ul>
+<li><p>linux sort(一句话的事，但不是本文的重点)</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sort -t , -k1,1 multi_category_data</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>sql</p>
+</li>
+</ul>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span></span><br><span class="line">    <span class="keyword">distinct</span> cat1, cat2</span><br><span class="line"><span class="keyword">from</span></span><br><span class="line">    multi_category_data;</span><br><span class="line"># 或</span><br><span class="line"><span class="keyword">select</span></span><br><span class="line">    cat1, cat2</span><br><span class="line"><span class="keyword">from</span></span><br><span class="line">    multi_category_data</span><br><span class="line"><span class="keyword">group</span> <span class="keyword">by</span></span><br><span class="line">    cat1, cat2;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>dataframe<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">data[[<span class="string">'cat1'</span>, <span class="string">'cat2'</span>]].drop_duplicates()</span><br><span class="line"><span class="comment"># data[['cat1', 'cat2']].drop_duplicates(keep='first')</span></span><br><span class="line"><span class="comment"># data[['cat1', 'cat2']].drop_duplicates(keep='last')</span></span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<p>输出:<br><img src="/img/blog/df/distinct1.png" alt></p>
+<p>drop_duplicates的参数keep指定在数据重复时保留首行或末行，可以通过第1列行号来区别保留的哪一行，如默认保留首行，所以我们看到有重复行的[影视,连续剧]、[音乐,流行]前的行号分别为1和3，对应原始数据其首次出现的行号。</p>
+<h2 id="2-分组问题"><a href="#2-分组问题" class="headerlink" title="2. 分组问题"></a>2. 分组问题</h2><h3 id="1-对单列或多列执行相同的聚合操作"><a href="#1-对单列或多列执行相同的聚合操作" class="headerlink" title="1. 对单列或多列执行相同的聚合操作"></a>1. 对单列或多列执行相同的聚合操作</h3><p>比如想看看各个二级类目下都有多少作品:</p>
+<ul>
+<li><p>sql</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span></span><br><span class="line">    cat1, cat2, <span class="keyword">count</span>(<span class="keyword">name</span>)</span><br><span class="line"><span class="keyword">from</span></span><br><span class="line">    multi_category_data</span><br><span class="line"><span class="keyword">group</span> <span class="keyword">by</span></span><br><span class="line">    cat1, cat2</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>dataframe</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">data.groupby([<span class="string">'cat1'</span>, <span class="string">'cat2'</span>])[[<span class="string">'name'</span>]].count()</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<p>输出:<br><img src="/img/blog/df/group1.png" alt></p>
+<p>更多例子:<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">data.groupby([<span class="string">'cat1'</span>, <span class="string">'cat2'</span>])[[<span class="string">'score'</span>]].max()</span><br><span class="line">data.groupby([<span class="string">'cat1'</span>, <span class="string">'cat2'</span>])[[<span class="string">'score'</span>]].min()</span><br><span class="line">data.groupby([<span class="string">'cat1'</span>, <span class="string">'cat2'</span>])[[<span class="string">'score'</span>]].mean()</span><br><span class="line">data.groupby([<span class="string">'cat1'</span>, <span class="string">'cat2'</span>])[[<span class="string">'score'</span>]].sum()</span><br><span class="line">data.groupby([<span class="string">'cat1'</span>, <span class="string">'cat2'</span>])[[<span class="string">'name'</span>, <span class="string">'score'</span>]].max()</span><br></pre></td></tr></table></figure></p>
+<h3 id="2-对多列分别执行不同的聚合操作"><a href="#2-对多列分别执行不同的聚合操作" class="headerlink" title="2. 对多列分别执行不同的聚合操作"></a>2. 对多列分别执行不同的聚合操作</h3><p>比如想看看所有二级分类下作品分值情况，如平均值、极值等，这里主要借助numpy的内置方法:</p>
+<ul>
+<li><p>sql</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span></span><br><span class="line">    cat1, cat2,</span><br><span class="line">    <span class="keyword">count</span>(<span class="keyword">name</span>), <span class="keyword">avg</span>(score), <span class="keyword">sum</span>(score), <span class="keyword">min</span>(score), <span class="keyword">max</span>(score)</span><br><span class="line"><span class="keyword">from</span></span><br><span class="line">    multi_category_data</span><br><span class="line"><span class="keyword">group</span> <span class="keyword">by</span></span><br><span class="line">    cat1, cat2</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>dataframe</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">data.groupby([<span class="string">'cat1'</span>, <span class="string">'cat2'</span>]).agg(&#123;<span class="string">'name'</span>: [np.size], <span class="string">'score'</span>: [np.mean, np.sum, np.min, np.max]&#125;)</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<p>输出:<br><img src="/img/blog/df/group2.png" alt></p>
+<h3 id="3-自定义聚合方法"><a href="#3-自定义聚合方法" class="headerlink" title="3. 自定义聚合方法"></a>3. 自定义聚合方法</h3><p>如何实现count(distinct column)操作呢？可以仿照numpy中内置的聚合方法，自定义一个:<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">my_distinct</span><span class="params">(rows)</span>:</span></span><br><span class="line">    <span class="keyword">return</span> len(set(e <span class="keyword">for</span> e <span class="keyword">in</span> rows))</span><br><span class="line"></span><br><span class="line">data.groupby([<span class="string">'cat1'</span>, <span class="string">'cat2'</span>]).agg(&#123;<span class="string">'name'</span>: [np.size], <span class="string">'score'</span>: [np.mean, np.sum, np.min, np.max, my_distinct]&#125;)</span><br></pre></td></tr></table></figure></p>
+<p>也可以采用lamba表达式实现匿名函数<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">data.groupby([<span class="string">'cat1'</span>, <span class="string">'cat2'</span>]).agg(&#123;<span class="string">'name'</span>: [np.size], <span class="string">'score'</span>: [np.mean, np.sum, np.min, np.max, <span class="keyword">lambda</span> rows: len(set(e <span class="keyword">for</span> e <span class="keyword">in</span> rows))]&#125;)</span><br></pre></td></tr></table></figure></p>
+<p>输出:<br><img src="/img/blog/df/group3.png" alt></p>
+<h3 id="4-行转列-group-concat"><a href="#4-行转列-group-concat" class="headerlink" title="4. 行转列: group_concat"></a>4. 行转列: group_concat</h3><p>sql中的group_concat可以实现将同组的多行字段拼接成一列，也就是行转列，numpy.unique可以轻松实现，比如下面我们合并每个二级分类下的所有分数(例子并不很恰当，学操作就行):</p>
+<ul>
+<li><p>sql</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span></span><br><span class="line">    cat1, cat2,</span><br><span class="line">    <span class="keyword">count</span>(<span class="keyword">name</span>), <span class="keyword">avg</span>(score), <span class="keyword">sum</span>(score), <span class="keyword">min</span>(score), <span class="keyword">max</span>(score),</span><br><span class="line">    <span class="keyword">count</span>(<span class="keyword">distinct</span> score), <span class="keyword">group_concat</span>(score separator  <span class="string">','</span>)</span><br><span class="line"><span class="keyword">from</span></span><br><span class="line">    multi_category_data</span><br><span class="line"><span class="keyword">group</span> <span class="keyword">by</span></span><br><span class="line">    cat1, cat2</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>dataframe</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">data.groupby([<span class="string">'cat1'</span>, <span class="string">'cat2'</span>]).agg(&#123;<span class="string">'name'</span>: [np.size], <span class="string">'score'</span>: [np.mean, np.sum, np.min, np.max, my_distinct, np.unique]&#125;)</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<p>输出:<br><img src="/img/blog/df/group4.png" alt></p>
+<p>先到这里，后续再补充~</p>
+
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
 	<div class="article-tag tagcloud">
 		<i class="icon-price-tags icon"></i>
 		<ul class="article-tag-list">
 			 
         		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color1">tensorflow</a>
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color2">python</a>
+        		</li>
+      		 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color2">pandas</a>
+        		</li>
+      		 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">dataframe</a>
+        		</li>
+      		 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">sql</a>
         		</li>
       		
 		</ul>
 	</div>
 
-          
+      
 
+      
+
+      
+        
+<div class="share-btn share-icons tooltip-left">
+  <div class="tooltip tooltip-east">
+    <span class="tooltip-item">
+      <a href="javascript:;" class="share-sns share-outer">
+        <i class="icon icon-share"></i>
+      </a>
+    </span>
+    <span class="tooltip-content">
+      <div class="share-wrap">
+        <div class="share-icons">
+          <a class="weibo share-sns" href="javascript:;" data-type="weibo">
+            <i class="icon icon-weibo"></i>
+          </a>
+          <a class="weixin share-sns wxFab" href="javascript:;" data-type="weixin">
+            <i class="icon icon-weixin"></i>
+          </a>
+          <a class="qq share-sns" href="javascript:;" data-type="qq">
+            <i class="icon icon-qq"></i>
+          </a>
+          <a class="douban share-sns" href="javascript:;" data-type="douban">
+            <i class="icon icon-douban"></i>
+          </a>
+          <a class="qzone share-sns" href="javascript:;" data-type="qzone">
+            <i class="icon icon-qzone"></i>
+          </a>
+          <a class="facebook share-sns" href="javascript:;" data-type="facebook">
+            <i class="icon icon-facebook"></i>
+          </a>
+          <a class="twitter share-sns" href="javascript:;" data-type="twitter">
+            <i class="icon icon-twitter"></i>
+          </a>
+          <a class="google share-sns" href="javascript:;" data-type="google">
+            <i class="icon icon-google"></i>
+          </a>
         </div>
-        <div class="clearfix"></div>
-    </header>
+      </div>
+    </span>
+  </div>
+</div>
+
+<div class="page-modal wx-share js-wx-box">
+    <a class="close js-modal-close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <div class="wx-qrcode">
+      <img src="//pan.baidu.com/share/qrcode?url=http://yoursite.com/4015900360.html" alt="微信分享二维码">
+    </div>
+</div>
+
+<div class="mask js-mask"></div>
+      
+      <div class="clearfix"></div>
+    </div>
   </div>
 </article>
+
+  
+<nav id="article-nav">
   
   
-    </div></section>
+    <a href="/1781693973.html" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">xgboost 特征重要性</div>
+      <i class="icon-circle-right"></i>
+    </a>
+  
+</nav>
+
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+  
+  
   
 
-    
+  
+
+  
+
+  
 
 
           </div>
@@ -220,9 +384,9 @@ var _hmt = _hmt || [];
 	var yiliaConfig = {
 		mathjax: false,
 		isHome: false,
-		isPost: false,
+		isPost: true,
 		isArchive: false,
-		isTag: true,
+		isTag: false,
 		isCategory: false,
 		open_in_new: false,
 		toc_hide_index: true,
