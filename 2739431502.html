@@ -68,11 +68,13 @@
 
 
 
-  <meta name="keywords" content="python爬虫,">
+  <meta name="keywords" content="爬虫,">
 
 
 
 
+
+  <link rel="alternate" href="/atom.xml" title="HeBlog" type="application/atom+xml">
 
 
 
@@ -80,7 +82,7 @@
 
 
 <meta name="description" content="最近有个需求，需要了解市场上小区的均价，于是试着写了个爬虫把链家上小区的信息爬取了一下。这次的爬虫任务比较简单，数据量不大，爬取链接中也没加密字段等反爬取策略，感觉还挺适合作为爬虫入门的例子。下载数据主要利用python requests库来完成，解析html页面用到xpath，下面分享些技巧和经验。">
-<meta name="keywords" content="python爬虫">
+<meta name="keywords" content="爬虫">
 <meta property="og:type" content="article">
 <meta property="og:title" content="链家小区均价数据爬取">
 <meta property="og:url" content="http://yoursite.com/2739431502.html">
@@ -92,7 +94,7 @@
 <meta property="og:image" content="http://yoursite.com/img/blog/spider-lianjia/zone3.jpg">
 <meta property="og:image" content="http://yoursite.com/img/blog/spider-lianjia/zone4.jpg">
 <meta property="og:image" content="http://yoursite.com/img/blog/spider-lianjia/zone5.jpg">
-<meta property="og:updated_time" content="2019-03-25T09:47:52.599Z">
+<meta property="og:updated_time" content="2019-03-28T09:08:24.350Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="链家小区均价数据爬取">
 <meta name="twitter:description" content="最近有个需求，需要了解市场上小区的均价，于是试着写了个爬虫把链家上小区的信息爬取了一下。这次的爬虫任务比较简单，数据量不大，爬取链接中也没加密字段等反爬取策略，感觉还挺适合作为爬虫入门的例子。下载数据主要利用python requests库来完成，解析html页面用到xpath，下面分享些技巧和经验。">
@@ -193,6 +195,26 @@
               <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
             
             首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br>
+            
+            分类
           </a>
         </li>
       
@@ -311,6 +333,28 @@
           </span>
 
           
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/爬虫/" itemprop="url" rel="index">
+                    <span itemprop="name">爬虫</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
 
           
             
@@ -426,7 +470,7 @@
       
         <div class="post-tags">
           
-            <a href="/tags/python爬虫/" rel="tag"># python爬虫</a>
+            <a href="/tags/爬虫/" rel="tag"># 爬虫</a>
           
         </div>
       
@@ -530,29 +574,55 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">8</span>
+                  <span class="site-state-item-count">7</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
             
 
             
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">3</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
 
             
               
               
               <div class="site-state-item site-state-tags">
-                
+                <a href="/tags/index.html">
                   <span class="site-state-item-count">15</span>
                   <span class="site-state-item-name">标签</span>
-                
+                </a>
               </div>
             
 
           </nav>
 
           
+            <div class="feed-link motion-element">
+              <a href="/atom.xml" rel="alternate">
+                <i class="fa fa-rss"></i>
+                RSS
+              </a>
+            </div>
+          
 
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/jiahe404" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+            </div>
           
 
           
@@ -667,6 +737,9 @@
 
 
 
+  
+  
+
 
 
 
@@ -699,6 +772,16 @@
   
   
     <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/three/three.min.js"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/three/canvas_sphere.min.js"></script>
   
 
 
