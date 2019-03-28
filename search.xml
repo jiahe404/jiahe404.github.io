@@ -3,7 +3,7 @@
   <entry>
     <title><![CDATA[Hello Blog]]></title>
     <url>%2F3393309511.html</url>
-    <content type="text"><![CDATA[假设$X_m$为树节点m上的数据。 分类问题，通常有如下衡量信息纯度的指标: 熵: ID3: 用于分类，要求特征为标称/类别型(categorical)。标称型特征值通常是可枚举的，用若干整数来表示，如性别可以用0和1表示，类似的特征如学历、城市线级、婚否等。]]></content>
+    <content type="text"><![CDATA[假设$X_m$为树节点m上的数据。 分类问题，通常有如下衡量信息纯度的指标: 熵: ID3: 用于分类，要求特征为标称/类别型(categorical)。标称型特征值通常是可枚举的，用若干整数来表示，如性别可以用0和1表示，类似的特征如学历、城市线级、婚否等。]]></content>
       <tags>
         <tag>随笔</tag>
       </tags>
