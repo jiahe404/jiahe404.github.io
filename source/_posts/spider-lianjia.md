@@ -2,7 +2,9 @@
 title: 链家小区均价数据爬取
 brief: 链家小区均价数据爬取
 tag:
-  - python爬虫
+  - 爬虫
+categories:
+  - 爬虫
 abbrlink: 2739431502
 date: 2018-09-24 00:00:00
 ---

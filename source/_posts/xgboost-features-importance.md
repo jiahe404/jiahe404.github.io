@@ -3,6 +3,9 @@ title: xgboost 特征重要性
 tag:
   - xgboost
   - 特征重要性
+categories:
+  - 机器学习
+  - tree
 abbrlink: 1781693973
 date: 2018-11-18 00:00:00
 ---

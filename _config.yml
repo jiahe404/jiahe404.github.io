@@ -5,10 +5,10 @@
 # Site
 title: HeBlog
 subtitle:
-description:
+description: 我有一个小萌宝
 keywords:
 author: Parker
-language:
+language: zh-Hans
 timezone:
 
 menu:
@@ -136,3 +136,10 @@ show_all_link: '展开全文'
 mathjax: false
 # 是否在新窗口打开链接
 open_in_new: false
+
+
+search:
+  path: search.xml
+  field: post
+  format: html
+  limit: 10000
