@@ -11,8 +11,6 @@ author: Parker
 language:
 timezone:
 
-reward_wording: '谢谢请我吃糖^_^'
-
 menu:
   home: /
   archives: /archives
@@ -31,16 +29,16 @@ abbrlink:
   rep: dec    # 进制：dec(default) and hex
 
 # icon
-avatar: spider.jpg
+avatar: /img/wc_avatar.jpg
 
 # 打赏基础设定：0-关闭打赏； 1-文章对应的md文件里有reward:true属性，才有打赏； 2-所有文章均有打赏
 reward_type: 1
 # 打赏wording
-
+reward_wording: '谢谢请我吃糖^_^'
 # 支付宝二维码图片地址，跟你设置头像的方式一样。比如：/assets/img/alipay.jpg
-alipay: "/al.jpg"
+alipay: /img/al.jpg
 # 微信二维码图片地址
-#weixin: "/img/w2.png"
+weixin: /img/wc.jpg
 
 # Directory
 source_dir: source
@@ -97,7 +95,8 @@ pagination_dir: page
 # Extensions
 ## Plugins: https://hexo.io/plugins/
 ## Themes: https://hexo.io/themes/
-theme: yilia
+# theme: yilia
+theme: next
 
 # Deployment
 ## Docs: https://hexo.io/docs/deployment.html
