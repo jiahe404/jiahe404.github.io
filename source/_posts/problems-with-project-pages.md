@@ -4,8 +4,10 @@ reward: true
 tag:
   - GitHub Pages
   - hexo
-abbrlink: 2225712445
-date: 2019-05-26 00:00:00
+abbrlink: 2225712446
+date: 2019-05-25 00:00:00
+categories:
+  - 博客搭建
 ---
 
 之前用github page给自己搭建了一个技术博客，年后想给老爸也搞个博客，记录下他的诗歌，作为生日礼物。
@@ -27,7 +29,7 @@ date: 2019-05-26 00:00:00
 
 # 创建项目主页repository
 
-> 由于github页面也会更新升级，所以你看到的页面可能和下面的图片不太一样，不过大体上应该是相同的(本篇博客写于2019-05-26)。
+> 由于github页面也会更新升级，所以你看到的页面可能和下面的图片不太一样，不过大体上应该是相同的(本篇博客写于2019-05-25)。
 
 ## 1. 创建新repository  
 1. 点击 **new repository**
@@ -109,7 +111,7 @@ hexo clean
 hexo g
 hexo d
 ```
-稍等几分钟后访问: https://jiahe404.github.io/demo/， 同样熟悉的landscape2：
+稍等几分钟后访问: https://jiahe404.github.io/demo/， 同样熟悉的landscape：
 ![landscape](/img/blog/problems-with-project-pages/landscape2.png)
 
 注意到目前为止**我并没有创建其他分支，如gh-pages等**，一些博客资料上写个人主页只能发布master分支内容(应该是正确的)，而项目主页只能发布gh-pages分支内容(我在[官方文档](https://help.github.com/en/articles/configuring-a-publishing-source-for-github-pages)上并未找到依据)。
